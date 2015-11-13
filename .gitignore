@@ -1,0 +1,376 @@
+#include<stdio.h>
+#include<conio.h>
+#include<strings.h>
+
+struct sym
+{
+char lab[1000];
+int val;
+};
+struct
+{
+  char ab[1000];
+}l[1000];
+struct
+{
+char opt[1000];
+int val;
+}o[1000];
+void main ()
+{
+FILE *f1,*f2,*fp;
+char la[1000],op[1000],opr[1000],a[1000],c,d[1000],e,zr[1000],rr[5];
+int i,j,n,k=0,lc=0,m=0,p=0,zz,q=0,tt=0,pp,w=0,pr[100],yr[100];
+struct sym s[1000];
+
+
+f1=fopen("pro.txt","r");
+f2=fopen("prog2.txt","r");
+fp=fopen("pro1.txt","w");
+c=fgetc(f1);
+i=0;
+printf ("\n SOURCE PROGRAM \n");
+printf("%c",c);
+while (c !=EOF)
+{
+a[i]=c;
+c=fgetc(f1);
+i++;
+printf("%c",c);
+}
+i=0;
+printf("\n");
+while(!feof(f2))
+{
+fscanf(f2,"%s %x",o[k].opt,&o[k].val);
+k++;
+}
+
+printf("\nINTERMEDIATE FILE \n");
+while(strcmp(op,"end")!=0)
+{
+if(a[i]==32)
+{
+strcpy(la,"");
+i++;
+}
+else
+{
+j=0;
+while(a[i]!=32)
+{
+la[j]=a[i];
+i++;
+j++;
+}
+la[j]='\0';
+i++;
+}
+if(a[i]==32)
+{
+strcpy(op,"");
+i++;
+}
+else
+{
+j=0;
+while (a[i]!=32)
+{
+op[j]=a[i];
+i++;
+
+j++;
+}
+op[j]='\0';
+i++;
+}
+if(a[i]=='\n')
+{
+strcpy(opr,"");
+i++;
+}
+else
+ {
+ j=0;
+while (a[i]!='\n')
+{
+opr[j]=a[i];
+ i++;
+j++;
+}
+opr[j]='\0';
+i++;
+}
+j=0;
+
+if (strcmp (la," ") !=0)
+{
+strcpy(s[m].lab,la);
+if(strcmp(op,"start")==0)
+{
+ sscanf(opr,"%x",&lc);
+ s[m].val=lc,
+ m++;
+continue;
+}
+else if(strcmp(opr,"")==0)
+{
+    printf("\n%x\t",lc);
+    strcpy(s[m].lab,la);
+    s[m].val=lc;
+    lc=lc+1;
+    m++;
+    strcpy(l[q].ab,op);
+    q++;
+    for(pp=0;pp<k;pp++)
+        if(strcmp(op,o[pp].opt)==0)
+    {
+    printf("%s ",op);
+    printf(" %s   ",opr);
+    printf("%x0000\n",o[pp].val);
+    fprintf(fp,"%x0000\n",o[pp].val);break;
+    }
+}
+else if (strcmp (op,"byt") ==0)
+{
+printf("\n%x\t",lc);
+strcpy(s[m].lab,la);
+if(opr[0]=='c')
+{ pp=2;
+w=0;
+    while(opr[pp]!='\'')
+    {
+        d[w]=opr[pp];
+        w++;pp++;}
+    d[w]='\0';
+      for(pp=0;pp<k;pp++)
+            {
+            if(strcmp(d,o[pp].opt)==0)
+             {
+              printf("%s ",op);
+              printf(" %s   ",opr);
+              printf("%x\n",o[pp].val);
+              fprintf(fp,"%x\n",o[pp].val);
+              zz=3;
+              break;}}
+              if(pp>=k){
+                     printf("%s ",op);
+              printf(" %s   ",opr);
+              printf("%s\n",d);
+              fprintf(fp,"%s\n",d);
+              zz=strlen(opr)-4;
+            }
+}
+if(opr[0]=='x')
+{
+    pp=2;
+    w=0;
+    printf("%s ",op);
+    printf(" %s   ",opr);
+    while(opr[pp]!='\''){
+        printf("%c",opr[pp]);
+        fprintf(fp,"%c",opr[pp]);pp++;}
+        fprintf(fp,"\n");
+        printf("\n");
+        zz=1;
+
+}
+s[m].val=lc;
+lc=lc+zz;
+m++;
+}
+
+else if (op[0] =='=')
+{
+printf("\n%x\t",lc);
+s[m].val=lc;
+w=0;
+p=0;
+while(op[p]!='\0')
+{
+ op[w]=op[w+1];
+ w++;
+ p++;
+}
+strcpy(l[q].ab,op);
+strcpy(s[m].lab,la);
+lc=lc+4;
+m++;
+q++;
+printf("%s ",op);
+printf(" %s   \n",opr);
+}
+
+else if (strcmp (op,"word") ==0)
+{
+printf("\n%x\t",lc);
+s[m].val=lc;
+zz=strlen(opr);
+zz=6-zz;
+for(w=0;w<zz;w++)
+    yr[w]=0;
+    sscanf(opr,"%x",&yr[w]);
+lc=lc+3;
+m++;
+w=0;
+printf("%s ",op);
+printf(" %s   ",opr);
+while(w<6){
+    printf("%x",yr[w]);w++;}
+    printf("\n");
+}
+else if (strcmp (op,"resw") ==0)
+{
+printf("\n%x\t",lc);
+s[m].val=lc;
+lc=lc+atoi(opr) *3;
+m++;
+printf("%s ",op);
+printf(" %s   \n",opr);
+}
+else if (strcmp (op,"resb") ==0)
+ {
+printf("\n%x\t",lc);
+s[m].val=lc;
+lc=lc+atoi(opr);
+m++;
+printf("%s ",op);
+printf(" %s   \n",opr);
+}
+else if (opr[1]==',' || strlen(opr)==1)
+{
+    tt=strlen(opr);
+    if(tt==1)
+    {
+        for(w=0;w<k;w++)
+        {
+
+             if(strcmp(opr,o[w].opt)==0)
+          {
+            printf("\n%x\t",lc);
+            strcpy(l[q].ab,op);
+            s[m].val=lc;
+              strcpy(s[m].lab,la);
+             for(pp=0;pp<k;pp++)
+              if(strcmp(l[q].ab,o[pp].opt)==0)
+                 {yr[0]=o[pp].val;break;}
+                 yr[1]=0;
+              yr[2]=o[w].val;
+              fprintf(fp,"%x%x%x",yr[0],yr[1],yr[2]);
+              fprintf(fp,"\n");
+              yr[3]=99;
+            lc=lc+2;
+            m++;
+            q++;
+              printf("%s ",op);
+              printf(" %s   ",opr);
+               w=0;
+               while(yr[w]!=99){
+                printf("%x",yr[w]);w++;}
+                printf("\n");
+            break;
+
+    }}}
+    if(tt==3)
+    {
+      yr[0]=opr[0];
+      yr[1]='\0';
+      for(w=0;w<k;w++)
+      {
+        if(strcmp(yr,o[w].opt)==0)
+        {
+            for(p=0;p<k;p++)
+            {
+             yr[0]=opr[2];
+             yr[1]='\0';
+               if(strcmp(yr,o[p].opt)==0)
+            {
+
+             printf("\n%x\t",lc);
+             strcpy(l[q].ab,op);
+             s[m].val=lc;
+             strcpy(s[m].lab,la);
+             for(pp=0;pp<k;pp++)
+               if(strcmp(l[q].ab,o[pp].opt)==0)
+                  {yr[0]=o[pp].val;break;}
+                yr[1]=o[p].val;
+                yr[2]=o[w].val;
+                yr[3]=99;
+                itoa(yr[0],rr,16);
+               if(strlen(rr)<2)
+               {
+                   zz=4;
+                   while(zz>0){
+                    yr[zz]=yr[zz-1];
+                    zz--;}
+                    yr[0]=0;
+                    fprintf(fp,"%x%x%x%x",yr[0],yr[1],yr[2],yr[3]);
+                    fprintf(fp,"\n");
+               }
+               else
+               {
+                   fprintf(fp,"%x%x%x",yr[0],yr[1],yr[2]);
+                    fprintf(fp,"\n");
+               }
+
+             lc=lc+2;
+             m++;
+             q++;
+              printf("%s ",op);
+              printf(" %s   ",opr);
+
+               zz=0;
+               while(yr[zz]!=99){
+                printf("%x",yr[zz]);zz++;}
+                printf("\n");
+                w=p=pp=k+1;
+               break;
+}}}}}}
+else
+{
+printf("\n%x\t",lc);
+strcpy(l[q].ab,op);
+strcpy(s[m].lab,la);
+s[m].val=lc;
+lc=lc+3;
+m++;
+q++;
+printf("%s ",op);
+printf(" %s   \n",opr);
+}
+}
+else
+{
+printf("\n%x\t",lc);
+lc=lc+3;
+strcpy(l[q].ab,op);
+q++;
+printf("%s ",op);
+printf(" %s   \n",opr);
+}
+}
+
+printf("\n symbol table \n");
+for(i=0;i<m;i++)
+    if(strcmp(s[i].lab,"")!=0)
+    {
+     printf("\n%s\t%x\n",s[i].lab,s[i].val);
+    }
+
+
+  printf("\nobject code\n");
+   for(i=0;i<q;i++)
+  {
+      for(j=0;j<k;j++)
+      {
+          if(strcmp(l[i].ab,o[j].opt)==0)
+          {
+              printf("\n%s\t%x",l[i].ab,o[j].val);
+              break;
+          }
+      }
+  }
+
+getch();
+}
+
