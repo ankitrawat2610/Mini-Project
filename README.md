@@ -43,7 +43,7 @@ WLOOP td OUTPUT
  wd OUTPUT 
  tr LENGTH 
  jtl WLOOP
- 
+ end copy
  
  //This is object file prog2.txt
  
@@ -85,8 +85,3 @@ i 6
 p 7         
 pc 8 
 sw 9
-
- 
- 
- 
- end copy
