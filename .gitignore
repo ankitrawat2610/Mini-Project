@@ -14,10 +14,10 @@ int val;
 }o[100];
 void main ()
 {
-FILE *f1,*f2,*fp,*f4,*f3,*f5;  //FILE POINTERS
-char la[100],op[100],opr[100],a[1000],c,d[100],e,zr[100],rr[50];
+FILE *f1,*f2,*fp,*f4,*f3,*f5,*f6;  //FILE POINTERS
+char la[1000],op[1000],opr[1000],a[1005],c,d[100],e,zr[100],rr[50];
 int i,j,n,k=0,lc=0,m=0,p=0,zz,q=0,tt=0,pp,w=0,pr[100],yr[100],b,flag;
-struct sym s[1000];
+struct sym s[100];
 f1=fopen("pro.txt","r");            //SOURCE PROGRAM
 f3=fopen("symtab.txt","w");         //STOREING SYMTAB TABLE IN FILE
 fp=fopen("opcode.txt","w");         //STOREING OPTAB TABLE IN FILE
@@ -85,6 +85,11 @@ j=0;
 if (strcmp (la," ") !=0)            // IF LABEL IS PRESENT
 {
   strcpy(s[m].lab,la);
+  for(w=0;w<m;w++)
+    strcpy(d,s[w].lab);
+       for(pp=w+1;pp<m;pp++)
+         if(strcmp(d,s[pp].lab)==0)
+          exit(0);
   if(strcmp(op,"start")==0)
  {
   sscanf(opr,"%x",&lc);
@@ -474,5 +479,96 @@ while(!feof(f4))    // MODIFICATION RECORD
         fprintf(f5,"\nM^%06x^05\n",(w+1));
  }}
 fprintf(f5,"\nE^%06x",s[i].val);     // END RECORD
+rewind(f4);
+f6=fopen("loader.txt","w");                  //loader
+printf("\n\nEnter the relocation adress");
+scanf("%x",&zz);
+sprintf(zr,"%x",zz);
+sscanf(zr,"%x",&n);
+fprintf(f6,"0000\txxxxxxxx\txxxxxxxx\txxxxxxxx\txxxxxxxx");
+if(zz>0)
+    fprintf(f6,"\n.\n.\n.\n.");
+    fprintf(f6,"\n%x\t",zz);
+    zz=zz+16;
+    i=0;
+    j=0;
+    opr[0]='\0';
+  lc=4096;
+while(!feof(f4))
+{fscanf(f4,"%x%s",&w,op);
+if((w-lc)>=4096)
+{
+    while(i!=32){
+        if(j==8)
+    {fprintf(f6,"\t");j=0;}
+      fprintf(f6,"x");i++;j++;}
+      i=0;j=0;
+    fprintf(f6,"\n.\n.\n.\n.");
+    zz=zz+4096-16;
+    fprintf(f6,"\n%x\t",zz);
+    zz=zz+16;
+    k=w%16;
+    k=k*2;
+    while(i!=k){
+        if(j==8)
+    {fprintf(f6,"\t");j=0;}
+      fprintf(f6,"x");i++;j++;}
+      if(j==8){
+        fprintf(f6,"\t");j=0;}
+}
+sprintf(zr,"%x",w);
+sscanf(zr,"%x",&lc);
+pp=0;
+ b=strlen(op);
+ if(b==8)
+ {
+     if(op[2]=='c' || op[2]=='4')
+     {
+        sscanf(op,"%x",&m);
+        m=m+n;
+        sprintf(op,"%x",m);
+     }
+ }
+if(strcmp(op," ")==0)
+    continue;
+while(op[pp]!='\0')
+{
+    if(strcmp(op,"-")==0)
+    {
+        for(tt=0;tt<6;tt++)
+        {
+            fprintf(f6,"x");
+             i=i+1;
+             j=j+1;
+             pp++;
+             if(j==8)
+             {fprintf(f6,"\t");j=0;}
+              if(i==32)
+             {
+              fprintf(f6,"\n%x\t",zz);
+              i=0;
+              zz=zz+16;
+             }
+        }
+        continue;
+    }
+    fprintf(f6,"%c",op[pp]);
+    i=i+1;
+    j=j+1;
+    pp++;
+    if(j==8)
+    {fprintf(f6,"\t");j=0;}
+    if(i==32)
+    {
+        fprintf(f6,"\n%x\t",zz);
+        i=0;
+        zz=zz+16;
+    }
+}}
+while(i!=32){
+        if(j==8)
+    {fprintf(f6,"\t");j=0;}
+fprintf(f6,"x");i++;j++;
+}
 getch();
 }
